@@ -23,15 +23,16 @@
 \usepackage{tikz}
 
 %% Maths packages
-% Mathutils provides some macros for streamlining the preamble of 
-% a substantial document.
-\usepackage{mathutils} % also loads amsmath, mathtools, etoolbox
+\usepackage{mathtools} % also loads amsmath
 \usepackage{amssymb, amsthm}
 
 \mathtoolsset{
   mathic, % or mathic = true
   centercolon=true
 }
+
+% etoolbox has some very useful utility macros
+\usepackage{etoolbox}
 
 %% Indexing
 % Uncomment the following to add an index
@@ -135,33 +136,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Macros
-% Put all your macros down here. I've included some of mine as examples. I 
-% make extensive use of the mathutils package to cut the length of this
-% part down. However, it will likely be fairly extensive.
+% Put all your macros down here. 
 
-% Norm(like) functions
-% These are used as follows: calling \norm{f} will produce ||f||, but calling
-% \norm{} will produce ||.||. This uses the mathtools \DeclarePairedDelimterXPP
-% for the heavy lifting. Norms can be resized using \norm[\large]{f} (for example).
-\DeclareNorm\abs\lvert\rvert        
-\DeclareNorm\norm\lVert\rVert
-\DeclareNamedNorm\twonorm\lVert\rVert{2}
-
-% Blackboard bold field letters.
-% produces macros \R, \T, \Q, etc. for
-% producing the blackboard bold equivalent.
-\DeclareFields{R, T, Q, N, Z, C, D}
-\DeclareFieldsP{R}{p}{^+} % \Rp for superscript + after
-\DeclareFieldsP{N}{o}{_0} % \No for subscript 0 after
-
-% Integral/differential roman d
-%\newcommand{\dm}{\mathop{}\!\mathrm{d}} % metric/integral notation
-% <http://tex.stackexchange.com/a/84308/49471>
-% This command is defined in the mathutils package
-
-% Space of bounded linear operators
-\DeclareNewSpace\bded[2]{\mathcal{B}(\checkequal[;]{#1}{#2})}
-% using \bded{X}{Y} produces B(X; Y), and using \bded{X}{X} produces B(X).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Thesis information
