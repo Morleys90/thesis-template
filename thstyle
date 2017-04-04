@@ -1,0 +1,105 @@
+%%% thstyle.sty
+\NeedsTeXFormat{LaTeX2e} \ProvidesPackage{thstyle}[2016/11/16 v1 Thesis style]
+\@ifclassloaded{memoir}{%
+  \let\chkend\relax}{%
+  \let\chkend\endinput
+  \PackageError{thstyle}{The memoir class must be loaded to use this
+  package}}
+\chkend
+
+% Thesis chapter style
+\makechapterstyle{thstyle}{%
+\renewcommand*{\chapterheadstart}{\vspace*{\beforechapskip}}
+\renewcommand*{\printchaptername}{\chapnamefont \@chapapp}
+\renewcommand*{\chapternamenum}{\space}
+\renewcommand*{\printchapternum}{\centering\chapnumfont \thechapter}
+\renewcommand*{\afterchapternum}{\par\nobreak\vskip \midchapskip}
+\renewcommand*{\printchapternonum}{}
+\renewcommand*{\printchaptertitle}[1]{\centering\chaptitlefont ##1}
+\renewcommand*{\afterchaptertitle}{\par\nobreak%
+\vskip 15pt%
+ \hrule\vskip \afterchapskip}
+\renewcommand*{\chapnamefont}{\normalfont\Large\scshape}
+\renewcommand*{\chapnumfont}{\normalfont\Large\scshape}
+\renewcommand*{\chaptitlefont}{\normalfont\Huge\bfseries}
+\setlength{\beforechapskip}{55pt} \setlength{\midchapskip}{15pt}
+\setlength{\afterchapskip}{35pt \@plus 15pt \@minus 20pt} }
+
+
+%% Misc pages setup
+\newcommand\pretoctitlefont{\normalfont\Huge\bfseries}
+\newcommand\afterpretoctitle{\vskip 15pt\hrule\vskip \afterchapskip}
+\newcommand*\pretoctitle[1]{\vspace*{\beforechapskip}{\centering\pretoctitlefont
+#1\par%
+  \afterpretoctitle}}
+\newcommand\setupptheaders[1]{
+  \markboth{#1}{}}
+
+
+% Epigraph
+\setlength\epigraphwidth{.85\textwidth}
+\epigraphposition{flushright}
+\epigraphtextposition{flushleft}
+\epigraphsourceposition{flushright}
+\setlength\epigraphrule{0pt}
+\setlength\beforeepigraphskip\fill
+\setlength\afterepigraphskip\fill
+\pretocmd\epigraph{\cleardoublepage
+\thispagestyle{cleared}\null}{}{}
+
+% Table of contents, etc
+\addtodef\tableofcontents{\clearforchapter\thispagestyle{chapter}}
+
+% Abstract
+\renewcommand\abstracttextfont{\normalfont}
+\newcommand\Abstract{
+  \clearforchapter
+  \thispagestyle{chapter}
+  \pretoctitle{\abstractname}
+  \setupptheaders{\abstractname}
+  \addcontentsline{toc}{chapter}{Abstract}}
+
+% Acknowledgements
+\newcommand{\Acknowledgements}{\chapter{Acknowledgements}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Titlepage macros
+\newlength\pretitleskip  \setlength\pretitleskip{72pt}
+\newlength\midtitleskip  \setlength\midtitleskip{15pt}
+\newlength\subtitleskip  \setlength\subtitleskip{100pt \@minus 30pt}
+\newlength\authorskip    \setlength\authorskip{150pt \@minus 50pt}
+\newlength\dateskip      \setlength\dateskip{80pt \@minus 30pt}
+
+\newcommand*\titlefont{\normalfont\Huge\bfseries}
+\newcommand*\subtitlefont{\normalfont\Large}
+\newcommand*\authorfont{\normalfont\Large}
+\newcommand*\declarationfont{\normalfont\large\itshape}
+\newcommand*\datefont{\normalfont\large}
+\newcommand*\titlepos{\centering}
+\newcommand*\subtitlepos{\centering}
+\newcommand*\authorpos{\centering}
+\newcommand*\declarationpos{\centering}
+\newcommand*\datepos{\centering}
+
+
+\def\@declaration{}
+\newcommand\declaration[1]{\def\@declaration{#1}}
+\def\@subtitle{}
+\newcommand\subtitle[1]{\def\@subtitle{#1}}
+
+\renewcommand\maketitle{%
+  \thispagestyle{titlingpage}
+  \null\vskip \pretitleskip
+  {\titlepos\titlefont \@title\par}
+  \ifdefempty\@subtitle{\null}{%
+  \vskip \midtitleskip
+  {\subtitlepos\subtitlefont \@subtitle\par}}
+  \vskip \subtitleskip
+  {\authorpos\authorfont \@author\par}
+  \vskip \authorskip
+  \ifdefempty\@declaration{\null}{%
+    {\declarationpos\declarationfont \@declaration\par}}
+  \vskip \dateskip
+  {\datepos\datefont \@date\par}}
+
+\endinput
