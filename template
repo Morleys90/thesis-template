@@ -1,0 +1,207 @@
+\documentclass[a4paper, 12pt, oneside]{memoir}
+
+%% Font setup
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{courier}
+
+%% internationalisation loading - for hyphenation mostly
+\usepackage[UKenglish]{babel}
+
+%% Microtypography
+% Takes a while to install, but worth it
+\usepackage[babel, expansion, protrusion, final]{microtype}
+
+%% Caption
+% Memoir has its own support for subfigures and sub captions, but I prefer the
+% subcaption interface. Using this package causes a warning, but this is fine.
+\usepackage[hang, small, bf, margin=20pt]{caption}
+\usepackage[labelformat=simple]{subcaption}
+\renewcommand\thesubfigure{\textup{(\alph{subfigure})}}
+
+%% Tikz setup
+\usepackage{tikz}
+
+%% Maths packages
+% Mathutils provides some macros for streamlining the preamble of 
+% a substantial document.
+\usepackage{mathutils} % also loads amsmath, mathtools, etoolbox
+\usepackage{amssymb, amsthm}
+
+\mathtoolsset{
+  mathic, % or mathic = true
+  centercolon=true
+}
+
+%% Indexing
+% Uncomment the following to add an index
+%\makeindex
+% One can create additional indices by adding additional
+% \makeindex calls. See the memoir package for details.
+
+
+%% Bibiography setup
+\usepackage[numbers,square,comma,sort&compress]{natbib}
+
+%% Hyperlinks setup
+\usepackage[hidelinks,plainpages=false,pdfpagelabels,final]{hyperref}
+\usepackage[figure,table]{hypcap}
+
+\hypersetup{%
+		bookmarksnumbered,
+	}
+
+%% Load personal style
+\usepackage{thstyle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Formatting
+%% Enumerate environment points
+% Set as: (a), (i), 1.
+\renewcommand{\theenumi}{\alph{enumi}}
+\renewcommand{\labelenumi}{\textup{(\theenumi)}}
+\renewcommand\theenumii{\roman{enumii}}
+\renewcommand\labelenumii{\textup{(\theenumii)}}
+\renewcommand\theenumiii{\arabic{enumiii}}
+\renewcommand\labelenumiii{\textup{\theenumiii.}}
+
+%% Misc
+% Set up some penalties for line/page breaking
+\widowpenalty=5000        % Single line at the top of a page (widow)
+\clubpenalty=5000         % Single line at the bottom of a page (orphan)
+\brokenpenalty=1000       % Page break after a hyphen
+\relpenalty=5000          % Line break at a relation (e.g. '=')
+\binoppenalty=5000        % Line break at a binary operator (e.g. '+')
+\flushbottom              % Text should finish flush to the bottom of the page
+
+\setcounter{tocdepth}{1}      % Only sections in the table of contents
+
+%% Equation numbering
+\numberwithin{equation}{chapter}
+
+%% Line spacing
+% Extra line spacing for a thesis
+\OnehalfSpacing
+
+%% Microtype expansion fixes
+% Make some alterations to the microtype setup. Delete if you are not using 
+% microtype. (Or modify to your preferences.)
+\setpnumwidth{3em}
+\setrmarg{4em}
+\pretocmd\tableofcontents{\microtypesetup{protrusion=false, expansion=false}}{}{}
+\apptocmd\tableofcontents{\microtypesetup{protrusion=true, expansion=true}}{}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Page layout
+\setulmarginsandblock{1.1in}{1.4in}{*}      % upper and lower margins
+\setlrmarginsandblock{1.5in}{1in}{*}        % left and right margins
+\setheadfoot{\onelineskip}{2\onelineskip}   % Header spacing
+\checkandfixthelayout                       % fix the margins
+
+% headings
+\pagestyle{headings}
+\nouppercaseheads % I prefer lower case headings, comment if you don't.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Theorem styles
+% standard style
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem*{notation}{Notation}
+
+% definition style
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{example}[theorem]{Example}
+
+% remark style
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Add a "end of example block"
+\AtBeginEnvironment{example}{%
+  \renewcommand\qedsymbol{\ensuremath{\blacksquare}}%
+}
+\AtEndEnvironment{example}{\qed}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Sectioning setup
+\chapterstyle{thstyle}        % loaded from my personal style
+\setsecnumdepth{subsection}   % Do not number subsubsections or below.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Macros
+% Put all your macros down here. I've included some of mine as examples. I 
+% make extensive use of the mathutils package to cut the length of this
+% part down. However, it will likely be fairly extensive.
+
+% Norm(like) functions
+% These are used as follows: calling \norm{f} will produce ||f||, but calling
+% \norm{} will produce ||.||. This uses the mathtools \DeclarePairedDelimterXPP
+% for the heavy lifting. Norms can be resized using \norm[\large]{f} (for example).
+\DeclareNorm\abs\lvert\rvert        
+\DeclareNorm\norm\lVert\rVert
+\DeclareNamedNorm\twonorm\lVert\rVert{2}
+
+% Blackboard bold field letters.
+% produces macros \R, \T, \Q, etc. for
+% producing the blackboard bold equivalent.
+\DeclareFields{R, T, Q, N, Z, C, D}
+\DeclareFieldsP{R}{p}{^+} % \Rp for superscript + after
+\DeclareFieldsP{N}{o}{_0} % \No for subscript 0 after
+
+% Integral/differential roman d
+%\newcommand{\dm}{\mathop{}\!\mathrm{d}} % metric/integral notation
+% <http://tex.stackexchange.com/a/84308/49471>
+% This command is defined in the mathutils package
+
+% Space of bounded linear operators
+\DeclareNewSpace\bded[2]{\mathcal{B}(\checkequal[;]{#1}{#2})}
+% using \bded{X}{Y} produces B(X; Y), and using \bded{X}{X} produces B(X).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Thesis information
+\title{Title}
+\subtitle{Subtitle}
+\author{Author}
+\date{\today}
+\declaration{Thesis submitted for} % printed italicised on titlepage
+
+\begin{document}
+
+\frontmatter
+
+\maketitle
+
+\Abstract
+\input{abstract} % input abstract
+
+\Acknowledgements
+\input{acknowledgements} % input acknowledgements
+
+\tableofcontents
+
+\mainmatter
+
+% Include some content
+\include{chapterone}  
+\include{chaptertwo}
+
+\appendix
+\include{appendix}
+
+\backmatter
+\bibliographystyle{abbrvnat}
+\bibliography{bibfile}
+
+% For an index, uncomment the following
+%\printindex
+
+\end{document} 
+
+
+
